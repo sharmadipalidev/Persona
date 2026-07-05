@@ -417,7 +417,6 @@ export function ChatStudio() {
               <div className="max-w-[700px] mx-auto flex items-center justify-between pt-3 mt-3 border-t border-border/40 text-[9px] font-mono text-muted-foreground/60 select-none">
                 <div className="flex items-center gap-3">
                   <span className="flex items-center gap-1">
-                    <span className={cn("h-1.5 w-1.5 rounded-full", isStreaming ? "bg-amber-500 animate-pulse" : "bg-emerald-500")} />
                     {isStreaming ? "broadcasting" : "ready"}
                   </span>
                   <span>•</span>
