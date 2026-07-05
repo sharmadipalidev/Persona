@@ -317,9 +317,6 @@ export function ChatStudio() {
                   <h2 className="font-display text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
                     Hello, Developer
                   </h2>
-                  <h3 className="font-display text-2xl font-extrabold tracking-tight text-muted-foreground/80 sm:text-3xl">
-                    Let's make your code build faster.
-                  </h3>
                   <p className="text-xs text-muted-foreground max-w-lg mx-auto font-medium pt-1.5">
                     Your personal AI mentor powered by {persona.name.split(" ")[0]} AI
                   </p>
