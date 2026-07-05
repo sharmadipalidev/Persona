@@ -315,7 +315,7 @@ export function ChatStudio() {
                 {/* Hero greeting */}
                 <div className="text-center space-y-2 select-none">
                   <h2 className="font-display text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
-                    Hello, Developer
+                    {activePersonaId === "nikhil" ? "Hello Pineapples" : "Hello, Developer"}
                   </h2>
                   <p className="text-xs text-muted-foreground max-w-lg mx-auto font-medium pt-1.5">
                     Your personal AI mentor powered by {persona.name.split(" ")[0]} AI
