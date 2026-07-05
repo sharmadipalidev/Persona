@@ -6,7 +6,6 @@ import {
   BrainCircuit, 
   Sparkles, 
   Loader2, 
-  Plus, 
   Code, 
   BookOpen, 
   Network 
@@ -258,13 +257,8 @@ export function ChatStudio() {
           {/* Main workspace header bar */}
           <header className="flex shrink-0 items-center justify-between border-b border-border/60 px-4 py-3 sm:px-6 bg-card/40 backdrop-blur-md">
             
-            {/* Left: Dropdown styled selector */}
+            {/* Left: Header area */}
             <div className="flex items-center gap-2">
-              <button className="flex items-center gap-1 text-xs font-bold text-foreground hover:bg-muted/40 py-1.5 px-3 rounded-lg transition-colors border border-border/40 bg-card/60 shadow-sm">
-                MentorStudio 1.0
-                <span className="text-[10px] text-muted-foreground ml-1">▼</span>
-              </button>
-              
               {/* Mobile/Tablet switch selector */}
               <div className="flex items-center gap-1 lg:hidden">
                 {personaList.map((p) => {
@@ -327,19 +321,7 @@ export function ChatStudio() {
                     />
                     
                     {/* Bottom controls of the input card */}
-                    <div className="flex items-center justify-between pt-2 border-t border-border/30">
-                      {/* Left actions: Plus button */}
-                      <div className="flex items-center gap-2">
-                        <Button 
-                          type="button" 
-                          variant="ghost" 
-                          size="icon" 
-                          className="h-7 w-7 rounded-md bg-muted/60 text-muted-foreground hover:text-foreground"
-                        >
-                          <Plus className="h-4 w-4" />
-                        </Button>
-                      </div>
-
+                    <div className="flex items-center justify-end pt-2 border-t border-border/30">
                       {/* Right action: Send button (black button in image) */}
                       <Button
                         type="submit"

@@ -78,7 +78,7 @@ export function PersonaSidebar({
   return (
     <aside className="flex h-full flex-col bg-[#0f0f10] text-[#a1a1aa] border-r border-[#1a1a1c] p-4 select-none">
       {/* Top Header Logo */}
-      <div className="flex items-center justify-between px-1 mb-5">
+      <div className="flex items-center justify-start px-1 mb-5">
         <div className="flex items-center gap-2 text-white">
           <div className="h-5 w-5 rounded-full bg-primary flex items-center justify-center text-[10px] font-bold text-black">
             M
@@ -87,11 +87,6 @@ export function PersonaSidebar({
             MentorStudio
           </span>
         </div>
-        <button className="text-[#a1a1aa] hover:text-white transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
-            <path fillRule="evenodd" d="M2 4.75A.75.75 0 0 1 2.75 4h14.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 4.75ZM2 10a.75.75 0 0 1 .75-.75h14.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 10Zm9.25 4.5a.75.75 0 0 1 .75-.75h5a.75.75 0 0 1 0 1.5h-5a.75.75 0 0 1-.75-.75Z" clipRule="evenodd" />
-          </svg>
-        </button>
       </div>
 
       {/* Primary Actions */}
@@ -99,15 +94,10 @@ export function PersonaSidebar({
         <button
           onClick={onClearChat}
           disabled={messagesCount === 0}
-          className="flex w-full items-center justify-between rounded-lg border border-[#222225] bg-[#151518] px-3.5 py-2 text-xs font-semibold text-white transition-all hover:bg-[#1a1a1e] disabled:opacity-40"
+          className="flex w-full items-center justify-center gap-2 rounded-lg border border-[#222225] bg-[#151518] px-3.5 py-2 text-xs font-semibold text-white transition-all hover:bg-[#1a1a1e] disabled:opacity-40"
         >
-          <span className="flex items-center gap-2">
-            <Plus className="h-3.5 w-3.5" />
-            New chat
-          </span>
-          <kbd className="hidden sm:inline-flex h-4 select-none items-center gap-0.5 rounded border border-[#2d2d31] bg-[#1e1e21] px-1 font-mono text-[9px] font-medium text-[#71717a]">
-            ⌘N
-          </kbd>
+          <Plus className="h-3.5 w-3.5" />
+          New chat
         </button>
 
 
