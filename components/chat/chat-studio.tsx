@@ -1,14 +1,23 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { ArrowUp, Globe, RotateCcw, BrainCircuit, Sparkles, Loader2 } from "lucide-react";
+import { 
+  ArrowUp, 
+  BrainCircuit, 
+  Sparkles, 
+  Loader2, 
+  Plus, 
+  Code, 
+  BookOpen, 
+  Network 
+} from "lucide-react";
 import { PersonaAvatar } from "@/components/chat/persona-avatar";
 import { MessageList } from "@/components/chat/message-list";
 import { PersonaSidebar } from "@/components/chat/persona-sidebar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import {
   Tooltip,
   TooltipContent,
@@ -24,17 +33,47 @@ import {
 import { getPersona, personaList, type PersonaId } from "@/lib/personas";
 import { cn } from "@/lib/utils";
 
-const SUGGESTIONS: Record<PersonaId, string[]> = {
+const CARDS_SUGGESTIONS: Record<PersonaId, { title: string; desc: string; query: string; icon: any }[]> = {
   hitesh: [
-    "How do I start MERN from scratch?",
-    "DSA roadmap for placements?",
-    "Explain REST API simply",
+    {
+      title: "MERN Framework",
+      desc: "Learn structure and steps of MERN stack in Hinglish.",
+      query: "How do I start MERN from scratch?",
+      icon: Code
+    },
+    {
+      title: "Placements Guide",
+      desc: "Placements roadmap and DSA coding practices.",
+      query: "DSA roadmap for placements?",
+      icon: BookOpen
+    },
+    {
+      title: "Web Services",
+      desc: "REST APIs explained simply with real analogies.",
+      query: "Explain REST API simply",
+      icon: Network
+    }
   ],
   piyush: [
-    "How does RAG work in production?",
-    "Docker vs Kubernetes for a startup?",
-    "System design for a URL shortener",
-  ],
+    {
+      title: "Production RAG",
+      desc: "Understand retrieval-augmented generation backend flow.",
+      query: "How does RAG work in production?",
+      icon: Code
+    },
+    {
+      title: "Docker Orchestration",
+      desc: "Docker vs Kubernetes comparisons for modern startups.",
+      query: "Docker vs Kubernetes for a startup?",
+      icon: BookOpen
+    },
+    {
+      title: "System Design",
+      desc: "High-level design guide for a scalable URL shortener.",
+      query: "System design for a URL shortener",
+      icon: Network
+    }
+  ]
 };
 
 export function ChatStudio() {
@@ -191,231 +230,227 @@ export function ChatStudio() {
 
   if (!hydrated) {
     return (
-      <div className="flex flex-1 items-center justify-center text-sm font-mono text-muted-foreground bg-background">
+      <div className="flex flex-1 items-center justify-center text-xs font-mono text-muted-foreground bg-background">
         <Loader2 className="h-4 w-4 animate-spin mr-2" />
-        loading workspace environment…
+        Initializing studio environment…
       </div>
     );
   }
 
   return (
     <TooltipProvider delayDuration={300}>
-      <div className="flex min-h-0 flex-1 flex-col">
-        {/* Mobile persona switcher */}
-        <div className="flex shrink-0 border-b border-border lg:hidden bg-card/20">
-          {personaList.map((p) => {
-            const active = p.id === activePersonaId;
-            return (
-              <button
-                key={p.id}
-                type="button"
-                onClick={() => handlePersonaSwitch(p.id)}
-                className={cn(
-                  "flex flex-1 items-center justify-center gap-2 border-r border-border/80 px-4 py-3 text-xs font-semibold last:border-r-0 transition-all",
-                  active ? "bg-muted/50 text-foreground" : "text-muted-foreground hover:text-foreground",
-                )}
-                style={
-                  active
-                    ? { borderBottom: `2.5px solid ${p.accent}` }
-                    : undefined
-                }
-              >
-                <PersonaAvatar
-                  persona={p}
-                  size="sm"
-                  active={active}
-                />
-                {p.name.split(" ")[0]}
-              </button>
-            );
-          })}
+      <div className="flex min-h-0 flex-1 flex-row">
+        
+        {/* Left Sidebar - Always dark (like the image) */}
+        <div className="hidden min-h-0 overflow-hidden lg:block w-[260px] shrink-0">
+          <PersonaSidebar
+            personas={personaList}
+            activeId={activePersonaId}
+            onSelect={handlePersonaSwitch}
+            onClearChat={clearMessages}
+            messagesCount={messages.length}
+          />
         </div>
 
-        <div className="grid min-h-0 flex-1 lg:grid-cols-[280px_1fr]">
-          {/* Sidebar on desktop */}
-          <div className="hidden min-h-0 overflow-hidden border-r border-border/80 lg:block">
-            <PersonaSidebar
-              personas={personaList}
-              activeId={activePersonaId}
-              onSelect={handlePersonaSwitch}
-            />
-          </div>
-
-          {/* Main chat interface */}
-          <main className="flex min-h-0 flex-col bg-background">
-            <header className="flex shrink-0 items-center justify-between gap-3 border-b border-border/85 px-4 py-3.5 sm:px-6 bg-card/5 backdrop-blur-xs">
-              <div className="flex min-w-0 items-center gap-3">
-                <PersonaAvatar persona={persona} size="sm" active />
-                <div className="min-w-0">
-                  <h2 className="truncate font-display text-sm font-extrabold tracking-tight text-foreground">
-                    {persona.name}
-                  </h2>
-                  <p className="truncate text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                    {persona.role}
-                  </p>
-                </div>
+        {/* Main Content Workspace - Dynamic light/dark (light bg by default matching the image) */}
+        <main className="flex min-h-0 flex-1 flex-col bg-background/95 transition-colors duration-300">
+          
+          {/* Main workspace header bar */}
+          <header className="flex shrink-0 items-center justify-between border-b border-border/60 px-4 py-3 sm:px-6 bg-card/40 backdrop-blur-md">
+            
+            {/* Left: Dropdown styled selector */}
+            <div className="flex items-center gap-2">
+              <button className="flex items-center gap-1 text-xs font-bold text-foreground hover:bg-muted/40 py-1.5 px-3 rounded-lg transition-colors border border-border/40 bg-card/60 shadow-sm">
+                MentorStudio 1.0
+                <span className="text-[10px] text-muted-foreground ml-1">▼</span>
+              </button>
+              
+              {/* Mobile/Tablet switch selector */}
+              <div className="flex items-center gap-1 lg:hidden">
+                {personaList.map((p) => {
+                  const active = p.id === activePersonaId;
+                  return (
+                    <button
+                      key={p.id}
+                      onClick={() => handlePersonaSwitch(p.id)}
+                      className={cn(
+                        "text-[10px] font-bold py-1 px-2.5 rounded-md border transition-all",
+                        active 
+                          ? "bg-primary border-primary/20 text-black shadow-sm" 
+                          : "bg-card/40 border-border/40 text-muted-foreground"
+                      )}
+                    >
+                      {p.name.split(" ")[0]}
+                    </button>
+                  );
+                })}
               </div>
-
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={clearMessages}
-                    disabled={messages.length === 0 || isStreaming}
-                    aria-label="Clear conversation"
-                    className="h-8.5 w-8.5 rounded-sm border-border bg-card/60 transition-all hover:bg-muted/80"
-                  >
-                    <RotateCcw className="h-3.5 w-3.5" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>Reset studio</TooltipContent>
-              </Tooltip>
-            </header>
-
-            {/* Scrollable message area */}
-            <div
-              ref={scrollRef}
-              className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 sm:px-6"
-            >
-              <MessageList
-                messages={messages}
-                persona={persona}
-                isStreaming={isStreaming}
-                bottomRef={bottomRef}
-              />
             </div>
 
-            {/* Composer */}
-            <div className="shrink-0 border-t border-border/80 bg-card/35 px-4 py-4 sm:px-6">
+            {/* Right: Actions */}
+            <div className="flex items-center gap-2">
+              <ThemeToggle />
+            </div>
+          </header>
+
+          {/* Scrollable messages or Center Input page */}
+          <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-4 sm:px-6 md:px-8">
+            {messages.length === 0 ? (
+              /* Landing State exactly resembling the image */
+              <div className="flex min-h-full flex-col justify-center items-center py-10 max-w-[840px] mx-auto space-y-12">
+                
+                {/* Hero greeting */}
+                <div className="text-center space-y-2 select-none">
+                  <h2 className="font-display text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
+                    Hello, Developer
+                  </h2>
+                  <h3 className="font-display text-2xl font-extrabold tracking-tight text-muted-foreground/80 sm:text-3xl">
+                    Let's make your code build faster.
+                  </h3>
+                  <p className="text-xs text-muted-foreground max-w-lg mx-auto font-medium pt-1.5">
+                    Your personal AI mentors {persona.name} for technical documents, systems architecture, and coding roadmap.
+                  </p>
+                </div>
+
+                {/* Floating Input Composer - Center style matching the image */}
+                <div className="w-full max-w-[700px] rounded-xl border border-border/80 bg-card p-3 shadow-md">
+                  <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+                    <Textarea
+                      ref={textareaRef}
+                      value={input}
+                      onChange={(e) => setInput(e.target.value)}
+                      onKeyDown={handleKeyDown}
+                      placeholder={`Ask anything to ${persona.name.split(" ")[0]}…`}
+                      rows={2}
+                      disabled={isStreaming}
+                      className="min-h-12 max-h-36 flex-1 resize-none bg-transparent border-0 ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 px-2 py-1 text-sm font-medium"
+                    />
+                    
+                    {/* Bottom controls of the input card */}
+                    <div className="flex items-center justify-between pt-2 border-t border-border/30">
+                      {/* Left actions: Plus button */}
+                      <div className="flex items-center gap-2">
+                        <Button 
+                          type="button" 
+                          variant="ghost" 
+                          size="icon" 
+                          className="h-7 w-7 rounded-md bg-muted/60 text-muted-foreground hover:text-foreground"
+                        >
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                      </div>
+
+                      {/* Right action: Send button (black button in image) */}
+                      <Button
+                        type="submit"
+                        size="icon"
+                        disabled={!input.trim() || isStreaming}
+                        className="h-8.5 w-8.5 rounded-lg bg-black text-white hover:bg-black/90 dark:bg-primary dark:text-black dark:hover:bg-primary/95 shadow transition-transform active:scale-95"
+                      >
+                        <ArrowUp className="h-4.5 w-4.5" />
+                      </Button>
+                    </div>
+                  </form>
+                </div>
+
+                {/* Bottom suggestion columns with Lime-Green highlight icons (EchoAI style) */}
+                <div className="w-full max-w-[700px] grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {CARDS_SUGGESTIONS[activePersonaId].map((card) => {
+                    const IconComp = card.icon;
+                    return (
+                      <button
+                        key={card.title}
+                        type="button"
+                        onClick={() => void sendMessage(card.query)}
+                        disabled={isStreaming}
+                        className="flex flex-col items-start text-left p-4 rounded-xl border border-border bg-card/60 hover:bg-card hover:-translate-y-1 transition-all duration-200 shadow-sm"
+                      >
+                        <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center mb-3">
+                          <IconComp className="h-4 w-4 text-black" />
+                        </div>
+                        <h4 className="text-xs font-bold text-foreground mb-1">
+                          {card.title}
+                        </h4>
+                        <p className="text-[10px] text-muted-foreground font-medium leading-relaxed">
+                          {card.desc}
+                        </p>
+                      </button>
+                    );
+                  })}
+                </div>
+
+              </div>
+            ) : (
+              /* Active Chat Message list */
+              <div className="max-w-[800px] mx-auto w-full">
+                <MessageList
+                  messages={messages}
+                  persona={persona}
+                  isStreaming={isStreaming}
+                  bottomRef={bottomRef}
+                />
+              </div>
+            )}
+          </div>
+
+          {/* Active Chat bottom pinned composer card */}
+          {messages.length > 0 && (
+            <div className="shrink-0 border-t border-border/60 bg-card/30 backdrop-blur-md px-4 py-4 sm:px-6 md:px-8">
               {error ? (
-                <div className="mb-3 rounded-sm border border-destructive/20 bg-destructive/10 px-3 py-2 text-xs font-medium text-destructive" role="alert">
+                <div className="mb-3 rounded-md border border-destructive/20 bg-destructive/10 px-3.5 py-2 text-xs font-semibold text-destructive" role="alert">
                   ⚠ Error: {error}
                 </div>
               ) : null}
 
               {searchWarning ? (
-                <div className="mb-3 rounded-sm border border-amber-500/20 bg-amber-500/10 px-3 py-2 text-xs font-medium text-amber-500" role="status">
+                <div className="mb-3 rounded-md border border-amber-500/20 bg-amber-500/10 px-3.5 py-2 text-xs font-semibold text-amber-500" role="status">
                   ⚠ Warning: {searchWarning}
                 </div>
               ) : null}
 
-              {messages.length === 0 ? (
-                <div className="mb-4 space-y-2">
-                  <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground/80 font-mono flex items-center gap-1.5">
-                    <Sparkles className="h-3 w-3 text-primary animate-spin" />
-                    Quick Prompts
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {SUGGESTIONS[activePersonaId].map((suggestion) => (
-                      <button
-                        key={suggestion}
-                        type="button"
-                        onClick={() => void sendMessage(suggestion)}
-                        disabled={isStreaming}
-                        className={cn(
-                          "rounded-sm border border-border bg-card/50 px-3.5 py-1.5 text-left text-xs font-semibold text-muted-foreground transition-all duration-200 hover:-translate-y-0.5 disabled:opacity-50",
-                          isHitesh
-                            ? "hover:border-primary/40 hover:bg-primary/[0.03] hover:text-primary"
-                            : "hover:border-secondary/40 hover:bg-secondary/[0.03] hover:text-secondary"
-                        )}
-                      >
-                        {suggestion}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              ) : null}
-
-              <form onSubmit={handleSubmit} className="flex gap-2">
-                <div
-                  className={cn(
-                    "flex-1 flex items-end gap-2 rounded-sm border border-border bg-card p-2.5 transition-all duration-200",
-                    "focus-within:ring-2",
-                    isHitesh
-                      ? "focus-within:ring-primary/20 focus-within:border-primary/40"
-                      : "focus-within:ring-secondary/20 focus-within:border-secondary/40"
-                  )}
-                >
+              <div className="max-w-[800px] mx-auto flex gap-2">
+                <div className="flex-1 flex items-center gap-2 rounded-xl border border-border/80 bg-card p-2 shadow-sm focus-within:ring-2 focus-within:ring-primary/20">
                   <Textarea
                     ref={textareaRef}
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    placeholder={
-                      webSearch
-                        ? `Consult ${persona.name.split(" ")[0]} with live search…`
-                        : `Consult ${persona.name.split(" ")[0]}…`
-                    }
+                    placeholder={`Ask ${persona.name.split(" ")[0]}…`}
                     rows={1}
                     disabled={isStreaming}
-                    className="min-h-9 max-h-28 flex-1 resize-none bg-transparent border-0 ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 px-1 py-1 text-sm font-medium"
+                    className="min-h-9 max-h-24 flex-1 resize-none bg-transparent border-0 ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 px-2 py-1.5 text-sm font-medium"
                   />
-                  
-                  {/* Search toggle inside composer */}
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        type="button"
-                        variant={webSearch ? "default" : "ghost"}
-                        size="icon"
-                        disabled={isStreaming}
-                        onClick={() => setWebSearch((on) => !on)}
-                        className={cn(
-                          "h-8.5 w-8.5 shrink-0 rounded-sm hover:bg-muted",
-                          webSearch && (
-                            isHitesh 
-                              ? "bg-primary text-primary-foreground hover:bg-primary/90" 
-                              : "bg-secondary text-secondary-foreground hover:bg-secondary/90"
-                          )
-                        )}
-                        aria-label="Toggle web search"
-                        aria-pressed={webSearch}
-                      >
-                        <Globe className="h-4 w-4" />
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent className="font-mono text-xs">
-                      {webSearch ? "RAG Search Enabled" : "RAG Search Disabled"}
-                    </TooltipContent>
-                  </Tooltip>
                 </div>
 
                 <Button
-                  type="submit"
-                  size="icon"
+                  onClick={handleSubmit}
                   disabled={!input.trim() || isStreaming}
-                  className="h-[46px] w-[46px] shrink-0 rounded-sm transition-transform active:scale-95"
-                  style={{
-                    backgroundColor: persona.accent,
-                    color: isHitesh ? "#ffffff" : "#0c0f14",
-                  }}
+                  size="icon"
+                  className="h-10 w-10 shrink-0 rounded-xl bg-black text-white hover:bg-black/90 dark:bg-primary dark:text-black dark:hover:bg-primary/95 shadow transition-transform active:scale-95"
                 >
                   <ArrowUp className="h-5 w-5" />
-                  <span className="sr-only">Send</span>
                 </Button>
-              </form>
-
-              <Separator className="my-3.5" />
+              </div>
 
               {/* Status details bar */}
-              <div className="flex flex-wrap items-center justify-between gap-3 text-[10px] font-mono text-muted-foreground/80">
+              <div className="max-w-[800px] mx-auto flex items-center justify-between pt-3 mt-3 border-t border-border/40 text-[9px] font-mono text-muted-foreground/60 select-none">
                 <div className="flex items-center gap-3">
-                  <span className="flex items-center gap-1.5">
-                    <span className={cn("h-1.5 w-1.5 rounded-sm", isStreaming ? "bg-amber-500 animate-pulse" : "bg-emerald-500")} />
-                    Status: {isStreaming ? "Broadcasting" : "Ready"}
+                  <span className="flex items-center gap-1">
+                    <span className={cn("h-1.5 w-1.5 rounded-full", isStreaming ? "bg-amber-500 animate-pulse" : "bg-emerald-500")} />
+                    {isStreaming ? "broadcasting" : "ready"}
                   </span>
-                  <span className="text-border">|</span>
+                  <span>•</span>
                   <span className="flex items-center gap-1">
                     <BrainCircuit className="h-3 w-3" />
-                    Memory: {summary ? "Contextualized" : "Empty"}
+                    Memory: {summary ? "Contextual" : "Empty"}
                   </span>
                 </div>
                 <span>Engine: Mistral Large</span>
               </div>
             </div>
-          </main>
-        </div>
+          )}
+
+        </main>
       </div>
     </TooltipProvider>
   );

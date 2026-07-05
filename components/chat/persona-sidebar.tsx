@@ -1,10 +1,19 @@
 "use client";
 
-import { ExternalLink, GitBranch, Globe } from "lucide-react";
+import { 
+  Plus, 
+  ChevronRight
+} from "lucide-react";
 import { PersonaAvatar } from "@/components/chat/persona-avatar";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import type { PersonaProfile } from "@/lib/personas/types";
+
+const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+  </svg>
+);
 
 interface PersonaCardProps {
   persona: PersonaProfile;
@@ -19,73 +28,34 @@ export function PersonaCard({ persona, active, onSelect }: PersonaCardProps) {
       type="button"
       onClick={onSelect}
       className={cn(
-        "group relative w-full text-left transition-all duration-200",
-        "border-b border-border/60 last:border-b-0",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary/40",
-        active ? "bg-muted/40" : "hover:bg-muted/15",
+        "group relative w-full text-left transition-all duration-200 rounded-lg py-2 px-2.5",
+        active ? "bg-muted/15 text-foreground" : "hover:bg-muted/10 text-muted-foreground hover:text-foreground",
       )}
       aria-pressed={active}
       aria-label={`Switch to ${persona.name}`}
     >
-      <div className="flex items-start gap-3.5 p-5">
-        <PersonaAvatar persona={persona} size="md" active={active} />
-
-        <div className="min-w-0 flex-1 space-y-2.5">
-          <div className="flex items-center justify-between gap-2">
-            <h3
-              className={cn(
-                "font-display text-sm font-semibold tracking-tight transition-colors",
-                active ? "text-foreground" : "text-muted-foreground group-hover:text-foreground",
-              )}
-            >
-              {persona.name}
-            </h3>
-            {active ? (
-              <span
-                className="shrink-0 rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider animate-pulse"
-                style={{
-                  backgroundColor: persona.accentMuted,
-                  color: persona.accent,
-                }}
-              >
-                Streaming
-              </span>
-            ) : null}
+      <div className="flex items-center gap-3">
+        <PersonaAvatar persona={persona} size="sm" active={active} />
+        
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center justify-between gap-1.5">
+            <span className="truncate text-xs font-semibold tracking-wide">
+              {persona.name.split(" ")[0]}
+            </span>
+            {active && (
+              <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+            )}
           </div>
-
-          <p className="line-clamp-2 text-xs leading-relaxed text-muted-foreground/90 font-medium">
-            {persona.tagline}
-          </p>
-
-          <div className="flex flex-wrap gap-1.5 pt-0.5">
-            {persona.topics.slice(0, 3).map((topic) => (
-              <Badge
-                key={topic}
-                variant="outline"
-                className={cn(
-                  "border-border/60 px-2 py-0 text-[10px] font-medium tracking-wide",
-                  active
-                    ? isHitesh
-                      ? "bg-primary/5 text-primary border-primary/20"
-                      : "bg-secondary/5 text-secondary border-secondary/20"
-                    : "bg-card/40 text-muted-foreground"
-                )}
-              >
-                {topic}
-              </Badge>
-            ))}
-          </div>
+          <span className="block truncate text-[10px] text-muted-foreground/80 font-medium">
+            {persona.id === "hitesh" ? "Chai aur Code ☕" : "Build Devs 🚀"}
+          </span>
         </div>
+        
+        <ChevronRight className={cn(
+          "h-3 w-3 opacity-0 -translate-x-1 transition-all group-hover:opacity-100 group-hover:translate-x-0",
+          active && "opacity-60 translate-x-0 text-primary"
+        )} />
       </div>
-
-      {/* Indication bar on the left */}
-      <div
-        className={cn(
-          "absolute bottom-0 left-0 top-0 w-1 transition-all duration-300",
-          active ? "opacity-100 scale-y-100" : "opacity-0 scale-y-0",
-        )}
-        style={{ backgroundColor: persona.accent }}
-      />
     </button>
   );
 }
@@ -94,68 +64,77 @@ interface PersonaSidebarProps {
   personas: PersonaProfile[];
   activeId: string;
   onSelect: (id: PersonaProfile["id"]) => void;
+  onClearChat: () => void;
+  messagesCount: number;
 }
 
 export function PersonaSidebar({
   personas,
   activeId,
   onSelect,
+  onClearChat,
+  messagesCount,
 }: PersonaSidebarProps) {
   return (
-    <aside className="flex h-full flex-col bg-card/20">
-      <div className="border-b border-border/80 px-5 py-5 bg-card/10">
-        <p className="text-[9px] font-bold uppercase tracking-[0.25em] text-muted-foreground/80">
-          Studio Roster
+    <aside className="flex h-full flex-col bg-[#0f0f10] text-[#a1a1aa] border-r border-[#1a1a1c] p-4 select-none">
+      {/* Top Header Logo */}
+      <div className="flex items-center justify-between px-1 mb-5">
+        <div className="flex items-center gap-2 text-white">
+          <div className="h-5 w-5 rounded-full bg-primary flex items-center justify-center text-[10px] font-bold text-black">
+            M
+          </div>
+          <span className="font-display text-sm font-extrabold tracking-tight">
+            MentorStudio
+          </span>
+        </div>
+        <button className="text-[#a1a1aa] hover:text-white transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-4 h-4">
+            <path fillRule="evenodd" d="M2 4.75A.75.75 0 0 1 2.75 4h14.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 4.75ZM2 10a.75.75 0 0 1 .75-.75h14.5a.75.75 0 0 1 0 1.5H2.75A.75.75 0 0 1 2 10Zm9.25 4.5a.75.75 0 0 1 .75-.75h5a.75.75 0 0 1 0 1.5h-5a.75.75 0 0 1-.75-.75Z" clipRule="evenodd" />
+          </svg>
+        </button>
+      </div>
+
+      {/* Primary Actions */}
+      <div className="space-y-1 mb-6">
+        <button
+          onClick={onClearChat}
+          disabled={messagesCount === 0}
+          className="flex w-full items-center justify-between rounded-lg border border-[#222225] bg-[#151518] px-3.5 py-2 text-xs font-semibold text-white transition-all hover:bg-[#1a1a1e] disabled:opacity-40"
+        >
+          <span className="flex items-center gap-2">
+            <Plus className="h-3.5 w-3.5" />
+            New chat
+          </span>
+          <kbd className="hidden sm:inline-flex h-4 select-none items-center gap-0.5 rounded border border-[#2d2d31] bg-[#1e1e21] px-1 font-mono text-[9px] font-medium text-[#71717a]">
+            ⌘N
+          </kbd>
+        </button>
+
+
+
+
+      </div>
+
+      {/* Recents / Mentor Switcher Section */}
+      <div className="flex-1 space-y-3">
+        <p className="px-3 text-[9px] font-bold uppercase tracking-wider text-[#52525b]">
+          Mentors
         </p>
-        <h2 className="mt-1 font-display text-base font-extrabold tracking-tight text-foreground">
-          Choose Mentor
-        </h2>
+        <div className="space-y-1 px-1">
+          {personas.map((persona) => (
+            <PersonaCard
+              key={persona.id}
+              persona={persona}
+              active={persona.id === activeId}
+              onSelect={() => onSelect(persona.id)}
+            />
+          ))}
+        </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto">
-        {personas.map((persona) => (
-          <PersonaCard
-            key={persona.id}
-            persona={persona}
-            active={persona.id === activeId}
-            onSelect={() => onSelect(persona.id)}
-          />
-        ))}
-      </div>
 
-      <div className="flex flex-col gap-2.5 border-t border-border/80 p-5 bg-card/15">
-        {(() => {
-          const active = personas.find((p) => p.id === activeId);
-          return (
-            <>
-              {active?.website ? (
-                <a
-                  href={active.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-xs font-medium text-muted-foreground transition-colors hover:text-primary"
-                >
-                  <Globe className="h-3.5 w-3.5" />
-                  Official site
-                  <ExternalLink className="h-3 w-3 opacity-60 ml-auto" />
-                </a>
-              ) : null}
-              {active?.github ? (
-                <a
-                  href={active.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-xs font-medium text-muted-foreground transition-colors hover:text-primary"
-                >
-                  <GitBranch className="h-3.5 w-3.5" />
-                  GitHub repository
-                  <ExternalLink className="h-3 w-3 opacity-60 ml-auto" />
-                </a>
-              ) : null}
-            </>
-          );
-        })()}
-      </div>
+
+
     </aside>
   );
 }
