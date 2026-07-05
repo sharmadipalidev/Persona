@@ -1,4 +1,4 @@
-export type PersonaId = "hitesh" | "piyush";
+export type PersonaId = "hitesh" | "piyush" | "nikhil";
 
 export interface PersonaProfile {
   id: PersonaId;

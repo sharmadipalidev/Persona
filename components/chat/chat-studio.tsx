@@ -71,6 +71,26 @@ const CARDS_SUGGESTIONS: Record<PersonaId, { title: string; desc: string; query:
       query: "System design for a URL shortener",
       icon: Network
     }
+  ],
+  nikhil: [
+    {
+      title: "Drizzle Schema",
+      desc: "Database modeling with Drizzle ORM and migrations.",
+      query: "Explain database schemas in Drizzle ORM",
+      icon: Code
+    },
+    {
+      title: "Next.js Routing",
+      desc: "Next.js App Router folders and optimal structures.",
+      query: "Clean folder structure for Next.js App Router",
+      icon: BookOpen
+    },
+    {
+      title: "Micro-SaaS Stack",
+      desc: "Indie building and shipping micro-SaaS stacks fast.",
+      query: "Best tech stack to ship micro-SaaS fast",
+      icon: Network
+    }
   ]
 };
 
