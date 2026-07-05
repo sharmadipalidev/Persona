@@ -306,36 +306,36 @@ export function ChatStudio() {
                 </div>
 
                 {/* Floating Input Composer - Center style matching the image */}
-                <div className="w-full max-w-[700px] rounded-xl border border-border/80 bg-card p-4 shadow-md">
-                  <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+                <div className="w-full max-w-[620px] rounded-xl border border-border/80 bg-card p-3 shadow-md">
+                  <form onSubmit={handleSubmit} className="flex flex-col gap-1.5">
                     <textarea
                       ref={textareaRef}
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
                       onKeyDown={handleKeyDown}
                       placeholder={`Ask anything to ${persona.name.split(" ")[0]}…`}
-                      rows={2}
+                      rows={1}
                       disabled={isStreaming}
-                      className="min-h-12 max-h-36 flex-1 resize-none bg-transparent border-0 outline-none focus:outline-none ring-0 focus:ring-0 px-2 py-1 text-sm font-medium text-foreground placeholder:text-muted-foreground"
+                      className="min-h-10 max-h-28 flex-1 resize-none bg-transparent border-0 outline-none focus:outline-none ring-0 focus:ring-0 px-2 py-1 text-sm font-medium text-foreground placeholder:text-muted-foreground"
                     />
                     
                     {/* Bottom controls of the input card */}
-                    <div className="flex items-center justify-end pt-1">
+                    <div className="flex items-center justify-end pt-0.5">
                       {/* Right action: Send button (black button in image) */}
                       <Button
                         type="submit"
                         size="icon"
                         disabled={!input.trim() || isStreaming}
-                        className="h-8.5 w-8.5 rounded-lg bg-black text-white hover:bg-black/90 dark:bg-primary dark:text-black dark:hover:bg-primary/95 shadow transition-transform active:scale-95"
+                        className="h-8 w-8 rounded-lg bg-black text-white hover:bg-black/90 dark:bg-primary dark:text-black dark:hover:bg-primary/95 shadow transition-transform active:scale-95"
                       >
-                        <ArrowUp className="h-4.5 w-4.5" />
+                        <ArrowUp className="h-4 w-4" />
                       </Button>
                     </div>
                   </form>
                 </div>
 
                 {/* Bottom suggestion columns with Lime-Green highlight icons (EchoAI style) */}
-                <div className="w-full max-w-[700px] grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="w-full max-w-[620px] grid grid-cols-1 md:grid-cols-3 gap-4">
                   {CARDS_SUGGESTIONS[activePersonaId].map((card) => {
                     const IconComp = card.icon;
                     return (
@@ -389,7 +389,7 @@ export function ChatStudio() {
                 </div>
               ) : null}
 
-              <div className="max-w-[800px] mx-auto flex gap-2">
+              <div className="max-w-[700px] mx-auto flex gap-2">
                 <div className="flex-1 flex items-center gap-2 rounded-xl border border-border/80 bg-card p-2 shadow-sm focus-within:ring-2 focus-within:ring-primary/20">
                   <textarea
                     ref={textareaRef}
@@ -407,14 +407,14 @@ export function ChatStudio() {
                   onClick={handleSubmit}
                   disabled={!input.trim() || isStreaming}
                   size="icon"
-                  className="h-10 w-10 shrink-0 rounded-xl bg-black text-white hover:bg-black/90 dark:bg-primary dark:text-black dark:hover:bg-primary/95 shadow transition-transform active:scale-95"
+                  className="h-9 w-9 shrink-0 rounded-xl bg-black text-white hover:bg-black/90 dark:bg-primary dark:text-black dark:hover:bg-primary/95 shadow transition-transform active:scale-95"
                 >
-                  <ArrowUp className="h-5 w-5" />
+                  <ArrowUp className="h-4.5 w-4.5" />
                 </Button>
               </div>
 
               {/* Status details bar */}
-              <div className="max-w-[800px] mx-auto flex items-center justify-between pt-3 mt-3 border-t border-border/40 text-[9px] font-mono text-muted-foreground/60 select-none">
+              <div className="max-w-[700px] mx-auto flex items-center justify-between pt-3 mt-3 border-t border-border/40 text-[9px] font-mono text-muted-foreground/60 select-none">
                 <div className="flex items-center gap-3">
                   <span className="flex items-center gap-1">
                     <span className={cn("h-1.5 w-1.5 rounded-full", isStreaming ? "bg-amber-500 animate-pulse" : "bg-emerald-500")} />
