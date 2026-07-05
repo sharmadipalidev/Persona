@@ -1,6 +1,9 @@
 # Mentor Studio — AI Coding Mentor Simulator
 
-Mentor Studio is a high-performance Next.js application that simulates interactive, Hinglish-speaking AI coding mentors styled after prominent tech instructors **Hitesh Choudhary** (Chai aur Code) and **Piyush Garg**. 
+Mentor Studio is a high-performance Next.js application that simulates interactive, Hinglish-speaking AI coding mentors styled after prominent tech instructors:
+- **Hitesh Choudhary** (Chai aur Code)
+- **Piyush Garg**
+- **Nikhil Rathore** (@BlazeisCoding)
 
 It features real-time response streaming, live web search RAG integration via Tavily, client-persisted sliding conversation summaries, and a premium custom hybrid light/dark mode UI layout.
 
@@ -25,7 +28,7 @@ classDiagram
     }
 
     class PersonaProfile {
-        +string id ("hitesh" | "piyush")
+        +string id ("hitesh" | "piyush" | "nikhil")
         +string name
         +string tagline
         +string role
@@ -78,7 +81,7 @@ persona/
 │   │   ├── markdown-components.tsx # Custom ReactMarkdown custom rendering (syntax highlight)
 │   │   ├── markdown-content.tsx # Markdown parser integration
 │   │   ├── message-list.tsx     # Message bubbles & typing carets with dynamic colors
-│   │   ├── persona-avatar.tsx   # Rounded status-ring avatars for Hitesh/Piyush
+│   │   ├── persona-avatar.tsx   # Rounded status-ring avatars for Hitesh, Piyush, and Nikhil
 │   │   └── persona-sidebar.tsx  # Sidebar navigation matching the EchoAI design
 │   └── ui/
 │       ├── avatar.tsx           # Radix Avatar primitives
@@ -99,6 +102,7 @@ persona/
 │   ├── personas/
 │   │   ├── brevity.ts           # Strict word count constraints (max 100-120 words)
 │   │   ├── hitesh.ts            # Hitesh Choudhary identity guidelines
+│   │   ├── nikhil.ts            # Nikhil Rathore identity guidelines
 │   │   ├── index.ts             # Persona profile roster registry
 │   │   ├── piyush.ts            # Piyush Garg identity guidelines
 │   │   └── types.ts             # Persona TypeScript shapes
