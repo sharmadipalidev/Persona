@@ -15,7 +15,6 @@ import { MessageList } from "@/components/chat/message-list";
 import { PersonaSidebar } from "@/components/chat/persona-sidebar";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { Textarea } from "@/components/ui/textarea";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import {
   Tooltip,
@@ -307,9 +306,9 @@ export function ChatStudio() {
                 </div>
 
                 {/* Floating Input Composer - Center style matching the image */}
-                <div className="w-full max-w-[700px] rounded-xl border border-border/80 bg-card p-3 shadow-md">
+                <div className="w-full max-w-[700px] rounded-xl border border-border/80 bg-card p-4 shadow-md">
                   <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-                    <Textarea
+                    <textarea
                       ref={textareaRef}
                       value={input}
                       onChange={(e) => setInput(e.target.value)}
@@ -317,11 +316,11 @@ export function ChatStudio() {
                       placeholder={`Ask anything to ${persona.name.split(" ")[0]}…`}
                       rows={2}
                       disabled={isStreaming}
-                      className="min-h-12 max-h-36 flex-1 resize-none bg-transparent border-0 ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 px-2 py-1 text-sm font-medium"
+                      className="min-h-12 max-h-36 flex-1 resize-none bg-transparent border-0 outline-none focus:outline-none ring-0 focus:ring-0 px-2 py-1 text-sm font-medium text-foreground placeholder:text-muted-foreground"
                     />
                     
                     {/* Bottom controls of the input card */}
-                    <div className="flex items-center justify-end pt-2 border-t border-border/30">
+                    <div className="flex items-center justify-end pt-1">
                       {/* Right action: Send button (black button in image) */}
                       <Button
                         type="submit"
@@ -392,7 +391,7 @@ export function ChatStudio() {
 
               <div className="max-w-[800px] mx-auto flex gap-2">
                 <div className="flex-1 flex items-center gap-2 rounded-xl border border-border/80 bg-card p-2 shadow-sm focus-within:ring-2 focus-within:ring-primary/20">
-                  <Textarea
+                  <textarea
                     ref={textareaRef}
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
@@ -400,7 +399,7 @@ export function ChatStudio() {
                     placeholder={`Ask ${persona.name.split(" ")[0]}…`}
                     rows={1}
                     disabled={isStreaming}
-                    className="min-h-9 max-h-24 flex-1 resize-none bg-transparent border-0 ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 px-2 py-1.5 text-sm font-medium"
+                    className="min-h-9 max-h-24 flex-1 resize-none bg-transparent border-0 outline-none focus:outline-none ring-0 focus:ring-0 px-2 py-1.5 text-sm font-medium text-foreground placeholder:text-muted-foreground"
                   />
                 </div>
 
