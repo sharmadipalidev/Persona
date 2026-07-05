@@ -42,9 +42,6 @@ export function PersonaCard({ persona, active, onSelect }: PersonaCardProps) {
             <span className="truncate text-xs font-semibold tracking-wide">
               {persona.name.split(" ")[0]}
             </span>
-            {active && (
-              <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-            )}
           </div>
           <span className="block truncate text-[10px] text-muted-foreground/80 font-medium">
             {persona.id === "hitesh" ? "Chai aur Code ☕" : "Build Devs 🚀"}
