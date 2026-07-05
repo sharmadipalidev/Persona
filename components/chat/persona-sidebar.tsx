@@ -35,7 +35,7 @@ export function PersonaCard({ persona, active, onSelect }: PersonaCardProps) {
       aria-label={`Switch to ${persona.name}`}
     >
       <div className="flex items-center gap-3">
-        <PersonaAvatar persona={persona} size="sm" active={active} />
+        <PersonaAvatar persona={persona} size="md" active={active} />
         
         <div className="min-w-0 flex-1">
           <div className="flex items-center justify-between gap-1.5">
@@ -44,7 +44,7 @@ export function PersonaCard({ persona, active, onSelect }: PersonaCardProps) {
             </span>
           </div>
           <span className="block truncate text-[10px] text-muted-foreground/80 font-medium">
-            {persona.id === "hitesh" ? "Chai aur Code ☕" : "Build Devs 🚀"}
+            {persona.id === "hitesh" ? "Chai aur Code" : "Build Devs"}
           </span>
         </div>
         
