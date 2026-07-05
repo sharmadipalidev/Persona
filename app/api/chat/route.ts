@@ -20,7 +20,7 @@ interface ChatRequestBody {
 }
 
 function isValidPersonaId(value: unknown): value is PersonaId {
-  return value === "hitesh" || value === "piyush";
+  return value === "hitesh" || value === "piyush" || value === "nikhil";
 }
 
 function getLastUserMessage(messages: ChatMessage[]): string | null {
