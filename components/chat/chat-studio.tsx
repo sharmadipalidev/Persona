@@ -321,7 +321,7 @@ export function ChatStudio() {
                     Let's make your code build faster.
                   </h3>
                   <p className="text-xs text-muted-foreground max-w-lg mx-auto font-medium pt-1.5">
-                    Your personal AI mentors {persona.name} for technical documents, systems architecture, and coding roadmap.
+                    Your personal AI mentor powered by {persona.name.split(" ")[0]} AI
                   </p>
                 </div>
 
